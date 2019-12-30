@@ -327,7 +327,7 @@ prescriptionsPlot(CCG='14L', BNF='5.1')
 ```
 
 
-![png](output_15_0.png)
+![output_15_0](https://user-images.githubusercontent.com/57946244/71593680-e80ddf00-2b2c-11ea-9e54-be1ea7311fe9.png)
 
 
 *Here can see plot showing the average values and standard deviation pertaining to the number of antibacterial drugs prescribed each month across all centers within the NHS Manchester CCG. Additionally the plot automatically includes the relevent values for the two centres within the selected CCG with the most extreme average values.* 
@@ -340,7 +340,7 @@ prescriptionsPlot(CCG='manc', BNF='antibacterial drugs')
 ```
 
 
-![png](output_18_0.png)
+![output_18_0](https://user-images.githubusercontent.com/57946244/71593689-f78d2800-2b2c-11ea-8f40-998ebc019c71.png)
 
 
 *Here can see that the function includes intelligent partial match API searching to allow it to be used without a knowlege of specific codes. This call produces exactly the same plot as the one above, produced using codes.*
@@ -353,7 +353,7 @@ prescriptionsPlot(CCG='manc', BNF='antibacterial drugs', centre='fallowfield')
 ```
 
 
-![png](output_21_0.png)
+![output_21_0](https://user-images.githubusercontent.com/57946244/71593702-0378ea00-2b2d-11ea-94ef-4e3759a4db8b.png)
 
 
 
@@ -362,7 +362,7 @@ prescriptionsPlot(CCG='manc', BNF='antibacterial drugs', centre='lady')
 ```
 
 
-![png](output_22_0.png)
+![output_22_0](https://user-images.githubusercontent.com/57946244/71593718-0ecc1580-2b2d-11ea-9510-92d673e4ac60.png)
 
 
 *The two plots above demonstrate that specifying a centre to the function will add the relevent values for the centre within the selected CCG closest to the search term provided.* 
@@ -378,7 +378,7 @@ prescriptionsPlot(CCG='manc', BNF='antibacterial drugs', centre='ladywood')
 
 
 
-![png](output_25_1.png)
+![output_25_1](https://user-images.githubusercontent.com/57946244/71593726-18ee1400-2b2d-11ea-961e-384158606ed8.png)
 
 
 *If no match exists for the specified centre within the selected CCG, the function returns a warning message exaplaining that an invalid entry was provided. It then returns the standard plot showing only the max and min centres as well as the average and standard deviation across all centres.*
@@ -391,7 +391,7 @@ prescriptionsPlot(CCG='essex', BNF='steroids')
 ```
 
 
-![png](output_28_0.png)
+![output_28_0](https://user-images.githubusercontent.com/57946244/71593742-260b0300-2b2d-11ea-9067-c51cd58a9629.png)
 
 
 
@@ -400,7 +400,7 @@ prescriptionsPlot(CCG='birmingham', BNF='5.1', centre='city')
 ```
 
 
-![png](output_29_0.png)
+![output_29_0](https://user-images.githubusercontent.com/57946244/71593759-302d0180-2b2d-11ea-921d-a8d8689a4b8c.png)
 
 
 

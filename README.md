@@ -3,15 +3,18 @@
 
 Overall introduction and background to the project....
 
+***Note: The jupyter notebook used to produce this markdown is present in the github directory as 'Submission.ipynb'. A second jupyter notebook, 'test.ipynb', contains the code used to conduct initial data and API exploration, experiment with a number of alternative plot designs and develop the final functions outlined below.*** 
+
 ### 1) Loading python dependencies.
 
 
 ```python
-import requests
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
+import requests # Import requests package to interact with openprescribing API.
+import numpy as np # Import numpy as it is a dependency of pandas.
+import pandas as pd # Import pandas for data manipulation and data frames.
+import matplotlib.pyplot as plt # Import matplotlib for figure production.
 
+# Set matplotlib size and display paramaters.
 %matplotlib inline
 plt.rcParams['figure.dpi'] = 100
 ```
@@ -25,8 +28,8 @@ def make_name(CCG,BNF):
     
     '''
     
-    
-    # Import requests as pandas package.
+    # Ensure the required packages are loaded
+    # (Import requests and pandas packages).
     import requests
     import pandas as pd
     
@@ -65,7 +68,8 @@ def getcombined(CCG, BNF):
     
     '''
     
-    # Import requests and pandas package.
+    # Ensure the required packages are loaded
+    # (Import requests and pandas packages).
     import requests
     import pandas as pd
    
@@ -123,7 +127,7 @@ def getcombined(CCG, BNF):
 
 
 ```python
-def prescriptionsPlot(CCG, BNF, centre=''):
+def prescriptionsPlot(CCG='', BNF='', centre='', demomode=False):
     ''' Example help for this function 3
     
     Note that IDs are added to the plot in brackets and following a colon in legend.
@@ -132,20 +136,35 @@ def prescriptionsPlot(CCG, BNF, centre=''):
     
     '''
     
-    # Import required packages.
+    # Ensure the required packages are loaded
+    # (Import requests, pandas and matplotlib packages).
     import numpy as np
     import pandas as pd
     import matplotlib.pyplot as plt
 
+    # If the demomode paramter of the function is set to True...
+    if demomode:
+        
+        # Do not use API.
+        # Ignore the provided CCG and BNF values and do not run 'make_name' or 'getcombined' functions.
+        
+        # Load the included example data set which relates to 
+        # CCG='14L' (Manchester) and BNF='5.1' (Antibacterial Drugs).
+        combined_data = pd.read_csv('ExampleData',index_col=0)
+        
+        # Set example CCG/BNF codes/names vector for plot lables.
+        codes_names = ['14L', 'NHS MANCHESTER CCG', '5.1', 'Antibacterial Drugs']
+        
+    else:
+        
+        # Run make_name function using specified CCG and BNF input.
+        codes_names = make_name(CCG,BNF)
+    
+        # Run combined_data function to retrieve both x and y information pertaining to specified CCG and BNF codes.
+        combined_data = getcombined(codes_names[0],codes_names[2])
     
     # Ensure specified centre is in block capitals.
     centre = centre.upper()
-    
-    # Run make_name function using specified CCG and BNF input.
-    codes_names = make_name(CCG,BNF)
-    
-    # Run combined_data function to retrieve both x and y information pertaining to specified CCG and BNF codes.
-    combined_data = getcombined(codes_names[0],codes_names[2])
     
     # Create column for prescrition items normalised by total list size.
     combined_data['itemsPP'] = combined_data['items']/combined_data['total_list_size']
@@ -298,25 +317,35 @@ help(prescriptionsPlot)
 
     Help on function prescriptionsPlot in module __main__:
     
-    prescriptionsPlot(CCG, BNF, centre='')
+    prescriptionsPlot(CCG='', BNF='', centre='', demomode=False)
         Example help for this function 3
         
         Note that IDs are added to the plot in brackets and following a colon in legend.
+        
+        Function saves plot as png.
     
 
 
 ### 4) Running the function without using an API call.
 
+The main benifit of the plotting functions outlined here are their ability to interact with the openprescribing API in order to quickly generate plots pertaining to different CCG and BNF codes. However, as APIs can fail the function includes a demo mode that is able to generate an example plot offline using example data relating to the prescriptions for Antibacterial Drugs from the Manchester CCG. 
+
 
 ```python
-...
+prescriptionsPlot(demomode=True)
 ```
 
 
+![png](output_14_0.png)
 
 
-    Ellipsis
 
+```python
+prescriptionsPlot(demomode=True, centre='lady')
+```
+
+
+![png](output_15_0.png)
 
 
 ### 5) Running the function searching the API for the Manchester CCG and Antibacterial Drugs BNF using their codes.
@@ -327,7 +356,7 @@ prescriptionsPlot(CCG='14L', BNF='5.1')
 ```
 
 
-![output_15_0](https://user-images.githubusercontent.com/57946244/71593680-e80ddf00-2b2c-11ea-9e54-be1ea7311fe9.png)
+![png](output_17_0.png)
 
 
 *Here can see plot showing the average values and standard deviation pertaining to the number of antibacterial drugs prescribed each month across all centers within the NHS Manchester CCG. Additionally the plot automatically includes the relevent values for the two centres within the selected CCG with the most extreme average values.* 
@@ -340,7 +369,7 @@ prescriptionsPlot(CCG='manc', BNF='antibacterial drugs')
 ```
 
 
-![output_18_0](https://user-images.githubusercontent.com/57946244/71593689-f78d2800-2b2c-11ea-8f40-998ebc019c71.png)
+![png](output_20_0.png)
 
 
 *Here can see that the function includes intelligent partial match API searching to allow it to be used without a knowlege of specific codes. This call produces exactly the same plot as the one above, produced using codes.*
@@ -353,7 +382,7 @@ prescriptionsPlot(CCG='manc', BNF='antibacterial drugs', centre='fallowfield')
 ```
 
 
-![output_21_0](https://user-images.githubusercontent.com/57946244/71593702-0378ea00-2b2d-11ea-94ef-4e3759a4db8b.png)
+![png](output_23_0.png)
 
 
 
@@ -362,7 +391,7 @@ prescriptionsPlot(CCG='manc', BNF='antibacterial drugs', centre='lady')
 ```
 
 
-![output_22_0](https://user-images.githubusercontent.com/57946244/71593718-0ecc1580-2b2d-11ea-9510-92d673e4ac60.png)
+![png](output_24_0.png)
 
 
 *The two plots above demonstrate that specifying a centre to the function will add the relevent values for the centre within the selected CCG closest to the search term provided.* 
@@ -378,7 +407,7 @@ prescriptionsPlot(CCG='manc', BNF='antibacterial drugs', centre='ladywood')
 
 
 
-![output_25_1](https://user-images.githubusercontent.com/57946244/71593726-18ee1400-2b2d-11ea-961e-384158606ed8.png)
+![png](output_27_1.png)
 
 
 *If no match exists for the specified centre within the selected CCG, the function returns a warning message exaplaining that an invalid entry was provided. It then returns the standard plot showing only the max and min centres as well as the average and standard deviation across all centres.*
@@ -391,7 +420,7 @@ prescriptionsPlot(CCG='essex', BNF='steroids')
 ```
 
 
-![output_28_0](https://user-images.githubusercontent.com/57946244/71593742-260b0300-2b2d-11ea-9067-c51cd58a9629.png)
+![png](output_30_0.png)
 
 
 
@@ -400,10 +429,5 @@ prescriptionsPlot(CCG='birmingham', BNF='5.1', centre='city')
 ```
 
 
-![output_29_0](https://user-images.githubusercontent.com/57946244/71593759-302d0180-2b2d-11ea-921d-a8d8689a4b8c.png)
+![png](output_31_0.png)
 
-
-
-```python
-
-```

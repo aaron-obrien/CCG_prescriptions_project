@@ -1,15 +1,24 @@
 
 ## Programming Coursework
 
-Overall introduction and background to the project....
+Who are openprescribing?
+Openprescribing is a project built by EBM DataLab, funded by NHS England and NIHR Biomedical Research Centre, which aims to make medical and scientific information more accessible. The project collates a variety of medical data from the NHS including prescribing data, practice list sizes, clinical commision group information, practice locations and BNF codes.
+More information can be found at https://openprescribing.net/
 
-who are openprescribing?
+What are bnf codes?
+BNF codes are unique identifiers for each drug which is prescribed in the NHS. The British National Formulary (BNF) maintain these codes and produces a hierarchial numbering system for drugs, grouped based on the drugs specific type. Openprescribing.net uses these codes to identify the number of drugs which have been prescribed by different practices.
+A list of all BNF sections can be found at https://openprescribing.net/bnf/
 
-what are bnf codes?
+What are ccg codes?
+CCG codes identify the clinical commissioning groups across England, which replaced primary care trusts following the NHS health and social care act in 2012. These groups are responsible for the commissioning of health services in the area which they govern. More information can be found at https://www.nhscc.org/ccgs/
 
-what are ccg code?
 
-* function to retireve two datasets and merge them into single table
+Our project
+Our project provides an interactive tool where users can produce graphs containing trends of prescribing over time, for particular medical practices across England. Users will provide input of a drug and clinical commissioning group (optionally, a practice within the specified clinical commissioning group may be input). The output will be a .png image file displaying a graph showing the highest prescribing practice of the specified drug within the specified CCG (normalised to practice list size), the average prescribing rate of a specified drug within the CCG, the lowest prescribing practice within the CCG, and if the optional practice input is given, the prescribing rate of the specified practice.
+
+This information is valuable to highlight which drugs are being overprescribed and underprescribed in different practices, where the reasons for varied prescription can be investigated.
+
+* function to retrieve two datasets and merge them into single table
 * function to search API for either code or partial name match and return both complete name and code as a vector.
 * Advanced plotting function using above two functions to allow plotting of x,y and z.*
 
@@ -56,7 +65,7 @@ def make_name(CCG,BNF):
     Details:
     
     OpenPrescribing have two information APIs that return details about all CCG or BNF sections
-    matching a specified code or name. This function concatonates the user specified arguments with
+    matching a specified code or name. This function concatenates the user specified arguments with
     strings containing the other elements of the web addresses necessary for the API calls. Using
     the .get function of the Requests package, the API calls are made and the results are coerced
     from .json into a pandas dataframe. The top row of the resultant CCG and BNF data frames then
@@ -125,7 +134,7 @@ def getcombined(CCG, BNF):
     Details:
     
     OpenPrescribing have a spending by practice API that allows information to be extracted for all centres
-    within a particular CCG. This function first concatonates the provided CCG and BNF code arguments into 
+    within a particular CCG. This function first concatenates the provided CCG and BNF code arguments into 
     a web address with the correct structure to obtain this information. The API call is made using the
     the requests package, an error check is conducted to ensure the API is responsive, and the results
     are coerced from a .json file into a pandas dataframe. The output of this first API call contains 
@@ -133,7 +142,7 @@ def getcombined(CCG, BNF):
     the last five years by each centre within the specified CCG.
     
     A second API provided by OpenPrescribing enables the total list size (how many patients a practice 
-    covers) to be identified for each centre within a specified CCG. This function concatonates the provided
+    covers) to be identified for each centre within a specified CCG. This function concatenates the provided
     CCG argument into a web address tailored for this API call. The call is then made using the requests 
     package and results coerced into a pandas data frame from .json. The output of this call contains the 
     total list size each month over the last five years for each centre within the specified CCG.
@@ -461,7 +470,7 @@ help(make_name)
         Details:
         
         OpenPrescribing have two information APIs that return details about all CCG or BNF sections
-        matching a specified code or name. This function concatonates the user specified arguments with
+        matching a specified code or name. This function concatenates the user specified arguments with
         strings containing the other elements of the web addresses necessary for the API calls. Using
         the .get function of the Requests package, the API calls are made and the results are coerced
         from .json into a pandas dataframe. The top row of the resultant CCG and BNF data frames then
@@ -501,7 +510,7 @@ help(getcombined)
         Details:
         
         OpenPrescribing have a spending by practice API that allows information to be extracted for all centres
-        within a particular CCG. This function first concatonates the provided CCG and BNF code arguments into 
+        within a particular CCG. This function first concatenates the provided CCG and BNF code arguments into 
         a web address with the correct structure to obtain this information. The API call is made using the
         the requests package, an error check is conducted to ensure the API is responsive, and the results
         are coerced from a .json file into a pandas dataframe. The output of this first API call contains 
@@ -509,7 +518,7 @@ help(getcombined)
         the last five years by each centre within the specified CCG.
         
         A second API provided by OpenPrescribing enables the total list size (how many patients a practice 
-        covers) to be identified for each centre within a specified CCG. This function concatonates the provided
+        covers) to be identified for each centre within a specified CCG. This function concatenates the provided
         CCG argument into a web address tailored for this API call. The call is then made using the requests 
         package and results coerced into a pandas data frame from .json. The output of this call contains the 
         total list size each month over the last five years for each centre within the specified CCG.

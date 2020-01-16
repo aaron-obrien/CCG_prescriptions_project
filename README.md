@@ -1,21 +1,23 @@
 
 ## Programming Coursework
+***
 
 #### Who are OpenPrescribing? 
-* OpenPrescribing is a project built by EBM DataLab, funded by NHS England and NIHR Biomedical Research Centre, which aims to make medical and scientific information more accessible. The project collates a variety of medical data from the NHS including prescribing data, practice list sizes, clinical commision group information, practice locations and BNF codes. More information can be found at https://openprescribing.net/
+>OpenPrescribing is a project built by EBM DataLab, funded by NHS England and NIHR Biomedical Research Centre, which aims to make medical and scientific information more accessible. The project collates a variety of medical data from the NHS including prescribing data, practice list sizes, clinical commision group information, practice locations and BNF codes. More information can be found at https://openprescribing.net/
 
 #### What are BNF codes?
-* BNF codes are unique identifiers for each drug which is prescribed in the NHS. The British National Formulary (BNF) maintain these codes and produces a hierarchial numbering system for drugs, grouped based on the drugs specific type. Openprescribing.net uses these codes to identify the number of drugs which have been prescribed by different practices. A list of all BNF sections can be found at https://openprescribing.net/bnf/
+>BNF codes are unique identifiers for each drug which is prescribed in the NHS. The British National Formulary (BNF) maintain these codes and produces a hierarchial numbering system for drugs, grouped based on the drugs specific type. Openprescribing.net uses these codes to identify the number of drugs which have been prescribed by different practices. A list of all BNF sections can be found at https://openprescribing.net/bnf/
 
 #### What are CCG codes?
-* CCG codes identify the clinical commissioning groups across England, which replaced primary care trusts following the NHS health and social care act in 2012. These groups are responsible for the commissioning of health services in the area which they govern. More information can be found at https://www.nhscc.org/ccgs/
+>CCG codes identify the clinical commissioning groups across England, which replaced primary care trusts following the NHS health and social care act in 2012. These groups are responsible for the commissioning of health services in the area which they govern. More information can be found at https://www.nhscc.org/ccgs/
 
 #### Our project
-* Our project provides an interactive tool where users can produce graphs containing trends of prescribing over time, for particular medical practices across England. Users will provide input of a drug and clinical commissioning group (optionally, a practice within the specified clinical commissioning group may be input). The output will be a .png image file displaying a graph showing the highest prescribing practice of the specified drug within the specified CCG (normalised to practice list size), the average prescribing rate of a specified drug within the CCG, the lowest prescribing practice within the CCG, and if the optional practice input is given, the prescribing rate of the specified practice.
+>Our project provides an interactive tool where users can produce graphs containing trends of prescribing over time, for particular medical practices across England. Users will provide input of a drug and clinical commissioning group (optionally, a practice within the specified clinical commissioning group may be input). The output will be a .png image file displaying a graph showing the highest prescribing practice of the specified drug within the specified CCG (normalised to practice list size), the average prescribing rate of a specified drug within the CCG, the lowest prescribing practice within the CCG, and if the optional practice input is given, the prescribing rate of the specified practice.
 
 *Note: The jupyter notebook used to produce this markdown is present in the github directory as 'Submission.ipynb'. A second jupyter notebook, 'test.ipynb', contains the code used to conduct initial data and API exploration, experiment with a number of alternative plot designs and develop the final functions outlined below.* 
 
 ### 1) Loading python dependencies.
+***
 
 
 ```python
@@ -30,6 +32,7 @@ plt.rcParams['figure.dpi'] = 100
 ```
 
 ### 2) Define the three custom functions devised for this project.
+***
 
 
 ```python
@@ -436,6 +439,7 @@ def prescriptionsPlot(CCG='', BNF='', centre='', demomode=False):
 ```
 
 ### 3) Examine help associated with each function.
+***
 
 
 ```python
@@ -611,6 +615,7 @@ help(prescriptionsPlot)
 
 
 ### 4) Running the function without using an API call.
+***
 
 The main benefit of the plotting functions outlined here are their ability to interact with the openprescribing API in order to quickly generate plots pertaining to different CCG and BNF codes. However, as APIs can fail the function includes a demo mode that is able to generate an example plot offline using example data relating to the prescriptions for Antibacterial Drugs from the Manchester CCG. 
 
@@ -656,6 +661,7 @@ prescriptionsPlot(CCG='14L', BNF='5.1')
 *Here can see plot showing the average values and standard deviation pertaining to the number of antibacterial drugs prescribed each month across all centers within the NHS Manchester CCG. Additionally the plot automatically includes the relevent values for the two centres within the selected CCG with the most extreme average values.* 
 
 ### 6) Running the function searching the API for the Manchester CCG and Antibacterial Drugs BNF using automatic partial matching of their names.
+***
 
 
 ```python
@@ -669,6 +675,7 @@ prescriptionsPlot(CCG='manc', BNF='antibacterial drugs')
 *Here can see that the function includes intelligent partial match API searching to allow it to be used without a knowlege of specific codes. This call produces exactly the same plot as the one above, produced using codes.*
 
 ### 7) Adding the values pertaining to a specific centre to a plot. 
+***
 
 
 ```python
@@ -677,7 +684,6 @@ prescriptionsPlot(CCG='manc', BNF='antibacterial drugs', centre='fallowfield')
 
 
 ![output_24_0](https://user-images.githubusercontent.com/57946244/72513700-41705080-3845-11ea-92a8-8fab5393dc5c.png)
-
 
 
 ```python
@@ -691,6 +697,7 @@ prescriptionsPlot(CCG='manc', BNF='antibacterial drugs', centre='lady')
 *The two plots above demonstrate that specifying a centre to the function will add the relevent values for the centre within the selected CCG closest to the search term provided.* 
 
 ### 8) Searching for a centre that does not exist within selected CCG.
+***
 
 
 ```python
@@ -707,6 +714,7 @@ prescriptionsPlot(CCG='manc', BNF='antibacterial drugs', centre='ladywood')
 *If no match exists for the specified centre within the selected CCG, the function returns a warning message exaplaining that an invalid entry was provided. It then returns the standard plot showing only the max and min centres as well as the average and standard deviation across all centres.*
 
 ### 9) Other examples of the function (different CCG, different BNF, etc.)
+***
 
 
 ```python

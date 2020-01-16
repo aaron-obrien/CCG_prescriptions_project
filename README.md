@@ -625,7 +625,7 @@ prescriptionsPlot(demomode=True)
 
 
 
-![png](output_15_1.png)
+![output_15_1](https://user-images.githubusercontent.com/57946244/72513447-f6563d80-3844-11ea-8c08-cb895d5e2abf.png)
 
 
 
@@ -639,7 +639,7 @@ prescriptionsPlot(demomode=True, centre='lady')
 
 
 
-![png](output_16_1.png)
+![output_16_1](https://user-images.githubusercontent.com/57946244/72513569-10901b80-3845-11ea-9931-912a18ed8038.png)
 
 
 ### 5) Running the function searching the API for the Manchester CCG and Antibacterial Drugs BNF using their codes.
@@ -650,7 +650,7 @@ prescriptionsPlot(CCG='14L', BNF='5.1')
 ```
 
 
-![png](output_18_0.png)
+![output_18_0](https://user-images.githubusercontent.com/57946244/72513651-2998cc80-3845-11ea-8e33-f0c4e8e5ec16.png)
 
 
 *Here can see plot showing the average values and standard deviation pertaining to the number of antibacterial drugs prescribed each month across all centers within the NHS Manchester CCG. Additionally the plot automatically includes the relevent values for the two centres within the selected CCG with the most extreme average values.* 
@@ -663,7 +663,7 @@ prescriptionsPlot(CCG='manc', BNF='antibacterial drugs')
 ```
 
 
-![png](output_21_0.png)
+![output_21_0](https://user-images.githubusercontent.com/57946244/72513666-34536180-3845-11ea-8f9c-d20eafd5efd7.png)
 
 
 *Here can see that the function includes intelligent partial match API searching to allow it to be used without a knowlege of specific codes. This call produces exactly the same plot as the one above, produced using codes.*
@@ -676,7 +676,7 @@ prescriptionsPlot(CCG='manc', BNF='antibacterial drugs', centre='fallowfield')
 ```
 
 
-![png](output_24_0.png)
+![output_24_0](https://user-images.githubusercontent.com/57946244/72513700-41705080-3845-11ea-92a8-8fab5393dc5c.png)
 
 
 
@@ -685,7 +685,7 @@ prescriptionsPlot(CCG='manc', BNF='antibacterial drugs', centre='lady')
 ```
 
 
-![png](output_25_0.png)
+![output_25_0](https://user-images.githubusercontent.com/57946244/72513730-53ea8a00-3845-11ea-96d2-fc8301d35c93.png)
 
 
 *The two plots above demonstrate that specifying a centre to the function will add the relevent values for the centre within the selected CCG closest to the search term provided.* 
@@ -701,7 +701,7 @@ prescriptionsPlot(CCG='manc', BNF='antibacterial drugs', centre='ladywood')
 
 
 
-![png](output_28_1.png)
+![output_28_1](https://user-images.githubusercontent.com/57946244/72513759-6238a600-3845-11ea-98f0-dffc158c722f.png)
 
 
 *If no match exists for the specified centre within the selected CCG, the function returns a warning message exaplaining that an invalid entry was provided. It then returns the standard plot showing only the max and min centres as well as the average and standard deviation across all centres.*
@@ -714,7 +714,7 @@ prescriptionsPlot(CCG='essex', BNF='steroids')
 ```
 
 
-![png](output_31_0.png)
+![output_31_0](https://user-images.githubusercontent.com/57946244/72513793-71b7ef00-3845-11ea-8904-535da408a37b.png)
 
 
 
@@ -723,5 +723,5 @@ prescriptionsPlot(CCG='birmingham', BNF='5.1', centre='city')
 ```
 
 
-![png](output_32_0.png)
+![output_32_0](https://user-images.githubusercontent.com/57946244/72513821-809ea180-3845-11ea-8870-8e5e4ec8f5cb.png)
 

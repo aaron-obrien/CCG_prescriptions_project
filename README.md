@@ -57,11 +57,11 @@ def makeName(CCG,BNF):
     OpenPrescribing have two information APIs that return details about all CCG or BNF sections
     matching a specified code or name. This function concatonates the user specified arguments with
     strings containing the other elements of the web addresses necessary for the API calls. Using
-    the .get function of the Requests package, the API calls are made and the results are coerced
-    from .json into a pandas dataframe. The top row of the resultant CCG and BNF data frames then
-    contain the details of the best matching OpenPrescribing entries for the users search term. The
-    relevent code and full name of this entry is then returned by the function as a list in the 
-    following format:
+    the .get function of the Requests package, the API calls are made and checked for errors,
+    and the results are coerced from .json into a pandas dataframe. The top row of the resultant 
+    CCG and BNF data frames then contain the details of the best matching OpenPrescribing entries 
+    for the users search term. The relevent code and full name of this entry is then returned by 
+    the function as a list in the following format:
     
     [CCG CODE, CCG NAME, BNF CODE, BNF NAME]
     
@@ -71,6 +71,16 @@ def makeName(CCG,BNF):
     # (Import requests and pandas packages).
     import requests
     import pandas as pd
+    
+    # Define an ApiError class to allow exceptions to be raised correctly.
+    class ApiError(Exception):
+        """An API Error Exception"""
+
+        def __init__(self, status):
+            self.status = status
+
+        def __str__(self):
+            return "APIError: status={}".format(self.status)
     
     # Define api components for later concatonation.
     linkapi = 'https://openprescribing.net'
@@ -86,7 +96,16 @@ def makeName(CCG,BNF):
     
     # Request from API using function from requests package. 
     CCG_request = requests.get(CCG_link)
+    
+    # Raise error if api does not return status 200.
+    if CCG_request.status_code != 200:
+        raise ApiError('{} (OpenPrescribing returned unsuitable status code)'.format(CCG_request.status_code))
+    
     BNF_request = requests.get(BNF_link)
+        
+    # Raise error if api does not return status 200.
+    if BNF_request.status_code != 200:
+        raise ApiError('{} (OpenPrescribing returned unsuitable status code)'.format(BNF_request.status_code))    
     
     # Convert the json files returned from api to a data frame.
     CCG_data = pd.DataFrame(CCG_request.json())
@@ -148,6 +167,16 @@ def getCombined(CCG, BNF):
     import requests
     import pandas as pd
    
+    # Define an ApiError class to allow exceptions to be raised correctly.
+    class ApiError(Exception):
+        """An API Error Exception"""
+
+        def __init__(self, status):
+            self.status = status
+
+        def __str__(self):
+            return "APIError: status={}".format(self.status)
+
     # Define api components for later concatonation.
     linkapi_1 = 'https://openprescribing.net/api/1.0/spending_by_practice/?'
     linkapi_2 = 'https://openprescribing.net/api/1.0/org_details/?org_type=practice'
@@ -162,10 +191,9 @@ def getCombined(CCG, BNF):
     # Request from API using function from requests package. 
     prescription_data = requests.get(firstcall)
     
-    # Error check if api does not return status 200.
+    # Raise error if api does not return status 200.
     if prescription_data.status_code != 200:
-        # This means something went wrong.
-        raise ApiError('GET /tasks/ {}'.format(resp.status_code))
+        raise ApiError('{} (OpenPrescribing returned unsuitable status code)'.format(prescription_data.status_code)) 
     
     # Create complete api link by concatonating above strings with user specified input.
     secondcall = linkapi_2 + org + CCG + ex + form
@@ -173,10 +201,9 @@ def getCombined(CCG, BNF):
     # Request from API using function from requests package. 
     listsize_data = requests.get(secondcall)
     
-    # Error check if api does not return status 200.
+    # Raise error if api does not return status 200.
     if listsize_data.status_code != 200:
-        # This means something went wrong.
-        raise ApiError('GET /tasks/ {}'.format(resp.status_code))
+        raise ApiError('{} (OpenPrescribing returned unsuitable status code)'.format(listsize_data.status_code)) 
         
     # Convert json to pandas data frame.
     prescription_data = pd.DataFrame(prescription_data.json())
@@ -294,10 +321,10 @@ def prescriptionsPlot(CCG='', BNF='', centre='', demomode=False):
         # Do not use API.
         # Ignore the provided CCG and BNF values and do not run 'makeName' or 'getCombined' functions.
         
-        # Warn user
+        # Warn user that demomode is active.
         print('Demomode active!')
         print('Loading ExampleData.csv')
-        print("Generating example plot: CCG = 'NHS Manchester CCG', BNF = 'Antibacterial Drugs'")
+        print("Generating example plot: CCG = 'NHS Manchester CCG', BNF = 'Antibacterial Drugs'", end='')
         
         # Load the included example data set which relates to 
         # CCG='14L' (Manchester) and BNF='5.1' (Antibacterial Drugs).
@@ -371,6 +398,10 @@ def prescriptionsPlot(CCG='', BNF='', centre='', demomode=False):
             # Extract full name of matched centre.
             name = custom_centre['row_name'].iloc[0]
             custom_items_id = combined_data[combined_data['row_name']==name]['row_id'].iloc[0]
+            
+            # If in demomode append centre name to printed warning!
+            if demomode:
+                print(', Centre = ' + name)
 
             # Add custom centre plot to subplot: x axis = dates; y axis = prescription items per 1000 people. 
             # Set line color to blue and label the line using the full name of matched centre.        
@@ -467,11 +498,11 @@ help(makeName)
         OpenPrescribing have two information APIs that return details about all CCG or BNF sections
         matching a specified code or name. This function concatonates the user specified arguments with
         strings containing the other elements of the web addresses necessary for the API calls. Using
-        the .get function of the Requests package, the API calls are made and the results are coerced
-        from .json into a pandas dataframe. The top row of the resultant CCG and BNF data frames then
-        contain the details of the best matching OpenPrescribing entries for the users search term. The
-        relevent code and full name of this entry is then returned by the function as a list in the 
-        following format:
+        the .get function of the Requests package, the API calls are made and checked for errors,
+        and the results are coerced from .json into a pandas dataframe. The top row of the resultant 
+        CCG and BNF data frames then contain the details of the best matching OpenPrescribing entries 
+        for the users search term. The relevent code and full name of this entry is then returned by 
+        the function as a list in the following format:
         
         [CCG CODE, CCG NAME, BNF CODE, BNF NAME]
     
@@ -624,9 +655,7 @@ prescriptionsPlot(demomode=True)
     Generating example plot: CCG = 'NHS Manchester CCG', BNF = 'Antibacterial Drugs'
 
 
-
 ![output_15_1](https://user-images.githubusercontent.com/57946244/72513447-f6563d80-3844-11ea-8c08-cb895d5e2abf.png)
-
 
 
 ```python
@@ -635,14 +664,14 @@ prescriptionsPlot(demomode=True, centre='lady')
 
     Demomode active!
     Loading ExampleData.csv
-    Generating example plot: CCG = 'NHS Manchester CCG', BNF = 'Antibacterial Drugs'
+    Generating example plot: CCG = 'NHS Manchester CCG', BNF = 'Antibacterial Drugs', Centre = LADYBARN GROUP PRACTICE
 
 
 
 ![output_16_1](https://user-images.githubusercontent.com/57946244/72513569-10901b80-3845-11ea-9931-912a18ed8038.png)
 
 
-## 5) Running the function searching the API for the Manchester CCG and Antibacterial Drugs BNF using their codes.
+### 5) Running the function searching the API for the Manchester CCG and Antibacterial Drugs BNF using their codes.
 
 
 ```python
@@ -677,6 +706,7 @@ prescriptionsPlot(CCG='manc', BNF='antibacterial drugs', centre='fallowfield')
 
 
 ![output_24_0](https://user-images.githubusercontent.com/57946244/72513700-41705080-3845-11ea-92a8-8fab5393dc5c.png)
+
 
 
 ```python

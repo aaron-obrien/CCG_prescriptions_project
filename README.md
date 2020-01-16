@@ -1,29 +1,19 @@
 
 ## Programming Coursework
 
-Who are openprescribing?
-Openprescribing is a project built by EBM DataLab, funded by NHS England and NIHR Biomedical Research Centre, which aims to make medical and scientific information more accessible. The project collates a variety of medical data from the NHS including prescribing data, practice list sizes, clinical commision group information, practice locations and BNF codes.
-More information can be found at https://openprescribing.net/
+#### Who are OpenPrescribing? 
+* OpenPrescribing is a project built by EBM DataLab, funded by NHS England and NIHR Biomedical Research Centre, which aims to make medical and scientific information more accessible. The project collates a variety of medical data from the NHS including prescribing data, practice list sizes, clinical commision group information, practice locations and BNF codes. More information can be found at https://openprescribing.net/
 
-What are bnf codes?
-BNF codes are unique identifiers for each drug which is prescribed in the NHS. The British National Formulary (BNF) maintain these codes and produces a hierarchial numbering system for drugs, grouped based on the drugs specific type. Openprescribing.net uses these codes to identify the number of drugs which have been prescribed by different practices.
-A list of all BNF sections can be found at https://openprescribing.net/bnf/
+#### What are BNF codes?
+* BNF codes are unique identifiers for each drug which is prescribed in the NHS. The British National Formulary (BNF) maintain these codes and produces a hierarchial numbering system for drugs, grouped based on the drugs specific type. Openprescribing.net uses these codes to identify the number of drugs which have been prescribed by different practices. A list of all BNF sections can be found at https://openprescribing.net/bnf/
 
-What are ccg codes?
-CCG codes identify the clinical commissioning groups across England, which replaced primary care trusts following the NHS health and social care act in 2012. These groups are responsible for the commissioning of health services in the area which they govern. More information can be found at https://www.nhscc.org/ccgs/
+#### What are CCG codes?
+* CCG codes identify the clinical commissioning groups across England, which replaced primary care trusts following the NHS health and social care act in 2012. These groups are responsible for the commissioning of health services in the area which they govern. More information can be found at https://www.nhscc.org/ccgs/
 
+#### Our project
+* Our project provides an interactive tool where users can produce graphs containing trends of prescribing over time, for particular medical practices across England. Users will provide input of a drug and clinical commissioning group (optionally, a practice within the specified clinical commissioning group may be input). The output will be a .png image file displaying a graph showing the highest prescribing practice of the specified drug within the specified CCG (normalised to practice list size), the average prescribing rate of a specified drug within the CCG, the lowest prescribing practice within the CCG, and if the optional practice input is given, the prescribing rate of the specified practice.
 
-Our project
-Our project provides an interactive tool where users can produce graphs containing trends of prescribing over time, for particular medical practices across England. Users will provide input of a drug and clinical commissioning group (optionally, a practice within the specified clinical commissioning group may be input). The output will be a .png image file displaying a graph showing the highest prescribing practice of the specified drug within the specified CCG (normalised to practice list size), the average prescribing rate of a specified drug within the CCG, the lowest prescribing practice within the CCG, and if the optional practice input is given, the prescribing rate of the specified practice.
-
-This information is valuable to highlight which drugs are being overprescribed and underprescribed in different practices, where the reasons for varied prescription can be investigated.
-
-* function to retrieve two datasets and merge them into single table
-* function to search API for either code or partial name match and return both complete name and code as a vector.
-* Advanced plotting function using above two functions to allow plotting of x,y and z.*
-
-
-***Note: The jupyter notebook used to produce this markdown is present in the github directory as 'Submission.ipynb'. A second jupyter notebook, 'test.ipynb', contains the code used to conduct initial data and API exploration, experiment with a number of alternative plot designs and develop the final functions outlined below.*** 
+*Note: The jupyter notebook used to produce this markdown is present in the github directory as 'Submission.ipynb'. A second jupyter notebook, 'test.ipynb', contains the code used to conduct initial data and API exploration, experiment with a number of alternative plot designs and develop the final functions outlined below.* 
 
 ### 1) Loading python dependencies.
 
@@ -43,11 +33,11 @@ plt.rcParams['figure.dpi'] = 100
 
 
 ```python
-def make_name(CCG,BNF):
+def makeName(CCG,BNF):
     '''
     Description: 
     
-    make_name makes two API calls to the OpenPrescribing database and returns a list
+    makeName makes two API calls to the OpenPrescribing database and returns a list
     containing both the full name and code identifier for the best match CCG and BNF 
     identified from the specified input arguments. 
     
@@ -65,7 +55,7 @@ def make_name(CCG,BNF):
     Details:
     
     OpenPrescribing have two information APIs that return details about all CCG or BNF sections
-    matching a specified code or name. This function concatenates the user specified arguments with
+    matching a specified code or name. This function concatonates the user specified arguments with
     strings containing the other elements of the web addresses necessary for the API calls. Using
     the .get function of the Requests package, the API calls are made and the results are coerced
     from .json into a pandas dataframe. The top row of the resultant CCG and BNF data frames then
@@ -112,11 +102,11 @@ def make_name(CCG,BNF):
 
 
 ```python
-def getcombined(CCG, BNF):
+def getCombined(CCG, BNF):
     ''' 
     Description:
     
-    getcombined makes two API calls to the OpenPrescribing database and returns a merged pandas
+    getCombined makes two API calls to the OpenPrescribing database and returns a merged pandas
     data frame that contains: the last five years of data pertaining to the total spending and 
     number of prescription items for the specified BNF code by month for each practice within the 
     specified CCG; and the total list size (how many patients a practice covers) for each practice
@@ -134,7 +124,7 @@ def getcombined(CCG, BNF):
     Details:
     
     OpenPrescribing have a spending by practice API that allows information to be extracted for all centres
-    within a particular CCG. This function first concatenates the provided CCG and BNF code arguments into 
+    within a particular CCG. This function first concatonates the provided CCG and BNF code arguments into 
     a web address with the correct structure to obtain this information. The API call is made using the
     the requests package, an error check is conducted to ensure the API is responsive, and the results
     are coerced from a .json file into a pandas dataframe. The output of this first API call contains 
@@ -142,7 +132,7 @@ def getcombined(CCG, BNF):
     the last five years by each centre within the specified CCG.
     
     A second API provided by OpenPrescribing enables the total list size (how many patients a practice 
-    covers) to be identified for each centre within a specified CCG. This function concatenates the provided
+    covers) to be identified for each centre within a specified CCG. This function concatonates the provided
     CCG argument into a web address tailored for this API call. The call is then made using the requests 
     package and results coerced into a pandas data frame from .json. The output of this call contains the 
     total list size each month over the last five years for each centre within the specified CCG.
@@ -170,10 +160,10 @@ def getcombined(CCG, BNF):
     firstcall = linkapi_1 + code + str(BNF) + org + CCG + form
     
     # Request from API using function from requests package. 
-    raw_data = requests.get(firstcall)
+    prescription_data = requests.get(firstcall)
     
     # Error check if api does not return status 200.
-    if raw_data.status_code != 200:
+    if prescription_data.status_code != 200:
         # This means something went wrong.
         raise ApiError('GET /tasks/ {}'.format(resp.status_code))
     
@@ -184,18 +174,18 @@ def getcombined(CCG, BNF):
     listsize_data = requests.get(secondcall)
     
     # Error check if api does not return status 200.
-    if raw_data.status_code != 200:
+    if listsize_data.status_code != 200:
         # This means something went wrong.
         raise ApiError('GET /tasks/ {}'.format(resp.status_code))
         
     # Convert json to pandas data frame.
-    data = pd.DataFrame(raw_data.json())
+    prescription_data = pd.DataFrame(prescription_data.json())
     
     # Extract column names.
-    columns = data.columns
+    columns = prescription_data.columns
     
     # Sort dataframe according to both date and practice name.
-    data = data.sort_values([columns[2],columns[6]])
+    prescription_data = prescription_data.sort_values([columns[2],columns[6]])
     
     # Convert second api call json to pandas.
     listsize_data = pd.DataFrame(listsize_data.json())
@@ -204,10 +194,10 @@ def getcombined(CCG, BNF):
     listsize_data = listsize_data.sort_values([columns[2],columns[6]])
 
     # Merge two api call dataframes together ensuring row_namne, date and row_ids match.
-    data = pd.merge(data, listsize_data, on=['row_name','date','row_id'])
+    combinedData = pd.merge(prescription_data, listsize_data, on=['row_name','date','row_id'])
    
     # Returm merged dataframe.
-    return(data)
+    return(combinedData)
 ```
 
 
@@ -216,8 +206,8 @@ def prescriptionsPlot(CCG='', BNF='', centre='', demomode=False):
     '''
     Description:
     
-    prescriptionsPlot passes the provided CCG and BNF arguments to the make_name function. The validated
-    CCG and BNF codes returned from the make_name function are then passed to the getcombined function
+    prescriptionsPlot passes the provided CCG and BNF arguments to the makeName function. The validated
+    CCG and BNF codes returned from the makeName function are then passed to the getCombined function
     to obtain a merged dataset ready for plotting. The function then returns a plot that displays the average
     and standard deviation number of prescriptions per 1000 people made for the specified BNF each month across
     all centres within the specified CCG. Additionally the plot displays the values for the two centres
@@ -231,7 +221,7 @@ def prescriptionsPlot(CCG='', BNF='', centre='', demomode=False):
     
     A .png of the plot is automatically saved when the function is excecuted.
     
-    Note: The function uses information retrived from the make_name function and getcombined results tables 
+    Note: The function uses information retrived from the makeName function and getCombined results tables 
     to populate the figure title and legend with both the full name and codes for the relevent CCG, BNF and 
     centres (CCG and BNF codes shown in title within brackets; centre codes shown in legend following colon).   
     
@@ -261,9 +251,9 @@ def prescriptionsPlot(CCG='', BNF='', centre='', demomode=False):
     
     Details:
     
-    By default, this function first retrieves CCG and BNF details using the make_name function and obtains 
+    By default, this function first retrieves CCG and BNF details using the makeName function and obtains 
     relevent data for the number of BNF prescriptions and total list size each month for each centre within 
-    the specified CCG using the getcombined function (See: help(make_name) and help(getcombined)). When 
+    the specified CCG using the getCombined function (See: help(makeName) and help(getCombined)). When 
     executed in demomode, the function loads an equivalent offline dataset pertaining to NHS Manchester 
     CCG and BNF = 'Antibacterial Drugs'.
     
@@ -302,7 +292,12 @@ def prescriptionsPlot(CCG='', BNF='', centre='', demomode=False):
     if demomode:
         
         # Do not use API.
-        # Ignore the provided CCG and BNF values and do not run 'make_name' or 'getcombined' functions.
+        # Ignore the provided CCG and BNF values and do not run 'makeName' or 'getCombined' functions.
+        
+        # Warn user
+        print('Demomode active!')
+        print('Loading ExampleData.csv')
+        print("Generating example plot: CCG = 'NHS Manchester CCG', BNF = 'Antibacterial Drugs'")
         
         # Load the included example data set which relates to 
         # CCG='14L' (Manchester) and BNF='5.1' (Antibacterial Drugs).
@@ -313,11 +308,11 @@ def prescriptionsPlot(CCG='', BNF='', centre='', demomode=False):
         
     else:
         
-        # Run make_name function using specified CCG and BNF input.
-        codes_names = make_name(CCG,BNF)
+        # Run makeName function using specified CCG and BNF input.
+        codes_names = makeName(CCG,BNF)
     
         # Run combined_data function to retrieve both x and y information pertaining to specified CCG and BNF codes.
-        combined_data = getcombined(codes_names[0],codes_names[2])
+        combined_data = getCombined(codes_names[0],codes_names[2])
     
     # Ensure specified centre is in block capitals.
     centre = centre.upper()
@@ -390,7 +385,7 @@ def prescriptionsPlot(CCG='', BNF='', centre='', demomode=False):
     ax.fill_between(mean_items_data.index, mean_items_data['mean']-mean_items_data['std'], mean_items_data['mean']+mean_items_data['std'],
                     alpha=0.9, edgecolor='#9c9ea1', facecolor='#dcdee0')
     
-    # Create title string by concatanating names derived from make_name function.
+    # Create title string by concatanating names derived from makeName function.
     title = 'Prescriptions for ' + codes_names[3] + ' (' + codes_names[2] + ')' + ' in ' + codes_names[1] + ' (' + codes_names[0] + ')' + ' over time (per 1000 people)'
     
     # Set title of plot to title string and update font size.
@@ -444,15 +439,15 @@ def prescriptionsPlot(CCG='', BNF='', centre='', demomode=False):
 
 
 ```python
-help(make_name)
+help(makeName)
 ```
 
-    Help on function make_name in module __main__:
+    Help on function makeName in module __main__:
     
-    make_name(CCG, BNF)
+    makeName(CCG, BNF)
         Description: 
         
-        make_name makes two API calls to the OpenPrescribing database and returns a list
+        makeName makes two API calls to the OpenPrescribing database and returns a list
         containing both the full name and code identifier for the best match CCG and BNF 
         identified from the specified input arguments. 
         
@@ -470,7 +465,7 @@ help(make_name)
         Details:
         
         OpenPrescribing have two information APIs that return details about all CCG or BNF sections
-        matching a specified code or name. This function concatenates the user specified arguments with
+        matching a specified code or name. This function concatonates the user specified arguments with
         strings containing the other elements of the web addresses necessary for the API calls. Using
         the .get function of the Requests package, the API calls are made and the results are coerced
         from .json into a pandas dataframe. The top row of the resultant CCG and BNF data frames then
@@ -484,15 +479,15 @@ help(make_name)
 
 
 ```python
-help(getcombined)
+help(getCombined)
 ```
 
-    Help on function getcombined in module __main__:
+    Help on function getCombined in module __main__:
     
-    getcombined(CCG, BNF)
+    getCombined(CCG, BNF)
         Description:
         
-        getcombined makes two API calls to the OpenPrescribing database and returns a merged pandas
+        getCombined makes two API calls to the OpenPrescribing database and returns a merged pandas
         data frame that contains: the last five years of data pertaining to the total spending and 
         number of prescription items for the specified BNF code by month for each practice within the 
         specified CCG; and the total list size (how many patients a practice covers) for each practice
@@ -510,7 +505,7 @@ help(getcombined)
         Details:
         
         OpenPrescribing have a spending by practice API that allows information to be extracted for all centres
-        within a particular CCG. This function first concatenates the provided CCG and BNF code arguments into 
+        within a particular CCG. This function first concatonates the provided CCG and BNF code arguments into 
         a web address with the correct structure to obtain this information. The API call is made using the
         the requests package, an error check is conducted to ensure the API is responsive, and the results
         are coerced from a .json file into a pandas dataframe. The output of this first API call contains 
@@ -518,7 +513,7 @@ help(getcombined)
         the last five years by each centre within the specified CCG.
         
         A second API provided by OpenPrescribing enables the total list size (how many patients a practice 
-        covers) to be identified for each centre within a specified CCG. This function concatenates the provided
+        covers) to be identified for each centre within a specified CCG. This function concatonates the provided
         CCG argument into a web address tailored for this API call. The call is then made using the requests 
         package and results coerced into a pandas data frame from .json. The output of this call contains the 
         total list size each month over the last five years for each centre within the specified CCG.
@@ -539,8 +534,8 @@ help(prescriptionsPlot)
     prescriptionsPlot(CCG='', BNF='', centre='', demomode=False)
         Description:
         
-        prescriptionsPlot passes the provided CCG and BNF arguments to the make_name function. The validated
-        CCG and BNF codes returned from the make_name function are then passed to the getcombined function
+        prescriptionsPlot passes the provided CCG and BNF arguments to the makeName function. The validated
+        CCG and BNF codes returned from the makeName function are then passed to the getCombined function
         to obtain a merged dataset ready for plotting. The function then returns a plot that displays the average
         and standard deviation number of prescriptions per 1000 people made for the specified BNF each month across
         all centres within the specified CCG. Additionally the plot displays the values for the two centres
@@ -554,7 +549,7 @@ help(prescriptionsPlot)
         
         A .png of the plot is automatically saved when the function is excecuted.
         
-        Note: The function uses information retrived from the make_name function and getcombined results tables 
+        Note: The function uses information retrived from the makeName function and getCombined results tables 
         to populate the figure title and legend with both the full name and codes for the relevent CCG, BNF and 
         centres (CCG and BNF codes shown in title within brackets; centre codes shown in legend following colon).   
         
@@ -584,9 +579,9 @@ help(prescriptionsPlot)
         
         Details:
         
-        By default, this function first retrieves CCG and BNF details using the make_name function and obtains 
+        By default, this function first retrieves CCG and BNF details using the makeName function and obtains 
         relevent data for the number of BNF prescriptions and total list size each month for each centre within 
-        the specified CCG using the getcombined function (See: help(make_name) and help(getcombined)). When 
+        the specified CCG using the getCombined function (See: help(makeName) and help(getCombined)). When 
         executed in demomode, the function loads an equivalent offline dataset pertaining to NHS Manchester 
         CCG and BNF = 'Antibacterial Drugs'.
         
@@ -617,15 +612,20 @@ help(prescriptionsPlot)
 
 ### 4) Running the function without using an API call.
 
-The main benifit of the plotting functions outlined here are their ability to interact with the openprescribing API in order to quickly generate plots pertaining to different CCG and BNF codes. However, as APIs can fail the function includes a demo mode that is able to generate an example plot offline using example data relating to the prescriptions for Antibacterial Drugs from the Manchester CCG. 
+The main benefit of the plotting functions outlined here are their ability to interact with the openprescribing API in order to quickly generate plots pertaining to different CCG and BNF codes. However, as APIs can fail the function includes a demo mode that is able to generate an example plot offline using example data relating to the prescriptions for Antibacterial Drugs from the Manchester CCG. 
 
 
 ```python
 prescriptionsPlot(demomode=True)
 ```
 
+    Demomode active!
+    Loading ExampleData.csv
+    Generating example plot: CCG = 'NHS Manchester CCG', BNF = 'Antibacterial Drugs'
 
-![output_14_0](https://user-images.githubusercontent.com/57946244/72349724-f9322080-36d4-11ea-865c-187a04c70fa4.png)
+
+
+![png](output_15_1.png)
 
 
 
@@ -633,8 +633,13 @@ prescriptionsPlot(demomode=True)
 prescriptionsPlot(demomode=True, centre='lady')
 ```
 
+    Demomode active!
+    Loading ExampleData.csv
+    Generating example plot: CCG = 'NHS Manchester CCG', BNF = 'Antibacterial Drugs'
 
-![output_15_0](https://user-images.githubusercontent.com/57946244/72349750-03ecb580-36d5-11ea-913d-87b28aac8ebc.png)
+
+
+![png](output_16_1.png)
 
 
 ### 5) Running the function searching the API for the Manchester CCG and Antibacterial Drugs BNF using their codes.
@@ -645,7 +650,7 @@ prescriptionsPlot(CCG='14L', BNF='5.1')
 ```
 
 
-![output_17_0](https://user-images.githubusercontent.com/57946244/72349779-11a23b00-36d5-11ea-9302-1085f8bb0781.png)
+![png](output_18_0.png)
 
 
 *Here can see plot showing the average values and standard deviation pertaining to the number of antibacterial drugs prescribed each month across all centers within the NHS Manchester CCG. Additionally the plot automatically includes the relevent values for the two centres within the selected CCG with the most extreme average values.* 
@@ -658,7 +663,7 @@ prescriptionsPlot(CCG='manc', BNF='antibacterial drugs')
 ```
 
 
-![output_20_0](https://user-images.githubusercontent.com/57946244/72349797-1b2ba300-36d5-11ea-895b-f34e7243a6da.png)
+![png](output_21_0.png)
 
 
 *Here can see that the function includes intelligent partial match API searching to allow it to be used without a knowlege of specific codes. This call produces exactly the same plot as the one above, produced using codes.*
@@ -671,7 +676,7 @@ prescriptionsPlot(CCG='manc', BNF='antibacterial drugs', centre='fallowfield')
 ```
 
 
-![output_23_0](https://user-images.githubusercontent.com/57946244/72349826-28489200-36d5-11ea-9cb2-ac3f52d2281d.png)
+![png](output_24_0.png)
 
 
 
@@ -680,7 +685,7 @@ prescriptionsPlot(CCG='manc', BNF='antibacterial drugs', centre='lady')
 ```
 
 
-![output_24_0](https://user-images.githubusercontent.com/57946244/72349840-30083680-36d5-11ea-880f-df5135e17b48.png)
+![png](output_25_0.png)
 
 
 *The two plots above demonstrate that specifying a centre to the function will add the relevent values for the centre within the selected CCG closest to the search term provided.* 
@@ -696,7 +701,7 @@ prescriptionsPlot(CCG='manc', BNF='antibacterial drugs', centre='ladywood')
 
 
 
-![output_27_1](https://user-images.githubusercontent.com/57946244/72349861-3a2a3500-36d5-11ea-8237-8a5f19f5e8df.png)
+![png](output_28_1.png)
 
 
 *If no match exists for the specified centre within the selected CCG, the function returns a warning message exaplaining that an invalid entry was provided. It then returns the standard plot showing only the max and min centres as well as the average and standard deviation across all centres.*
@@ -709,7 +714,7 @@ prescriptionsPlot(CCG='essex', BNF='steroids')
 ```
 
 
-![output_30_0](https://user-images.githubusercontent.com/57946244/72349881-457d6080-36d5-11ea-86be-c1bfb47d6fc1.png)
+![png](output_31_0.png)
 
 
 
@@ -718,5 +723,5 @@ prescriptionsPlot(CCG='birmingham', BNF='5.1', centre='city')
 ```
 
 
-![output_31_0](https://user-images.githubusercontent.com/57946244/72349902-4f06c880-36d5-11ea-9681-fba3f362fcb6.png)
+![png](output_32_0.png)
 
